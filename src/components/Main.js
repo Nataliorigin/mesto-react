@@ -1,6 +1,6 @@
 import avatar from "../images/avatar.png";
 import api from "../utils/api";
-import React from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 
 function Main({
@@ -9,12 +9,12 @@ function Main({
   onEditAvatarClick,
   onCardClick,
 }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState(avatar);
-  const [cards, setCards] = React.useState([]);
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState(avatar);
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     Promise.all([api.getInfoUser(), api.getCards()])
       .then(([resUserInfo, resCards]) => {
         setUserName(resUserInfo.name);
@@ -50,13 +50,7 @@ function Main({
       <section className="cards" aria-label="Изображения">
         <ul className="cards__container">
           {cards.map((card) => (
-            <Card
-              title={card.name}
-              likes={card.likes.length}
-              link={card.link}
-              key={card._id}
-              onCardClick={onCardClick}
-            />
+            <Card card={card} key={card._id} onCardClick={onCardClick} />
           ))}
         </ul>
       </section>

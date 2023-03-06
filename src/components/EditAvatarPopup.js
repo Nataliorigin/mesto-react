@@ -7,7 +7,6 @@ function EditAvatarPopup({ isOpen, onClose }) {
       title="Обновить аватар"
       isOpen={isOpen}
       onClose={onClose}
-      textButton={"Сохранить"}
     >
       <label className="form__field">
         <input

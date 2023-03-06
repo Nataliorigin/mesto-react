@@ -15,7 +15,7 @@ function PopupWithForm({ title, name, textButton, isOpen, onClose, children }) {
         <form action="#" className={"popup_form form"} name={name}>
           {children}
           <button className={"form__button-save"} type={"submit"}>
-            {textButton}
+            {textButton || "Сохранить"}
           </button>
         </form>
       </div>
