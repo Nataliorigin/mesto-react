@@ -1,14 +1,18 @@
 import PopupWithForm from "./PopupWithForm";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
-  const refInput = useRef();
+  const refInputLink = useRef();
+
+  useEffect(() => {
+    refInputLink.current.value = "";
+  }, [isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onUpdateAvatar({
-      avatar: refInput.current.value,
+      avatar: refInputLink.current.value,
     });
   }
 
@@ -23,7 +27,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
     >
       <label className="form__field">
         <input
-          ref={refInput}
+          ref={refInputLink}
           className="form__input form__input_name_linkAvatar"
           tabIndex="3"
           placeholder="Ссылка на картинку"
