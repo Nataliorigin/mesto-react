@@ -1,45 +1,39 @@
 import avatar from "../images/avatar.png";
-import api from "../utils/api";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
+  cards,
   onAddPlaceClick,
   onEditProfileClick,
   onEditAvatarClick,
   onCardClick,
+  handleCardLike,
+  onDeleteCardClick,
 }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState(avatar);
-  const [cards, setCards] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
 
-  useEffect(() => {
-    Promise.all([api.getInfoUser(), api.getCards()])
-      .then(([resUserInfo, resCards]) => {
-        setUserName(resUserInfo.name);
-        setUserDescription(resUserInfo.about);
-        setUserAvatar(resUserInfo.avatar);
-        setCards(resCards);
-      })
-      .catch((error) => console.log(error));
-  }, []);
   return (
     <main className="container">
       <section className="profile">
         <div className="profile__avatar-container" onClick={onEditAvatarClick}>
-          <img className="profile__avatar" src={userAvatar} alt="Аватар" />
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar || avatar}
+            alt="Аватар"
+          />
         </div>
         <div className="profile__info">
           <div className="profile__title-container">
-            <h1 className="profile__title">{userName}</h1>
+            <h1 className="profile__title">{currentUser.name}</h1>
             <button
               onClick={onEditProfileClick}
               className="profile__edit-button"
               type="button"
             ></button>
           </div>
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
         <button
           onClick={onAddPlaceClick}
@@ -50,7 +44,13 @@ function Main({
       <section className="cards" aria-label="Изображения">
         <ul className="cards__container">
           {cards.map((card) => (
-            <Card card={card} key={card._id} onCardClick={onCardClick} />
+            <Card
+              card={card}
+              key={card._id}
+              onCardClick={onCardClick}
+              onCardLike={handleCardLike}
+              onDeleteCardClick={onDeleteCardClick}
+            />
           ))}
         </ul>
       </section>

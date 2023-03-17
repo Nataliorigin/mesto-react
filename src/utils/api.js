@@ -8,21 +8,21 @@ class Api {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  getInfoUser = () => {
+  getUserInfo = () => {
     //Получить данные о пользователе
     return fetch(`${this._url}users/me`, {
       headers: this._headers,
     }).then((res) => this._handleCheckResponse(res));
   };
 
-  getCards = () => {
+  getCardList = () => {
     //Получить карточки
     return fetch(`${this._url}cards`, {
       headers: this._headers,
     }).then((res) => this._handleCheckResponse(res));
   };
 
-  editProfile = (data) => {
+  setUserInfo = (data) => {
     //Отправить новые данные пользователя
     return fetch(`${this._url}users/me`, {
       method: "PATCH",
@@ -34,7 +34,7 @@ class Api {
     }).then((res) => this._handleCheckResponse(res));
   };
 
-  addCard = (data) => {
+  setCard = (data) => {
     //Отправить новую карточку
     return fetch(`${this._url}cards`, {
       method: "POST",
@@ -54,24 +54,16 @@ class Api {
     }).then((res) => this._handleCheckResponse(res));
   };
 
-  addLike = (cardId) => {
+  changeLikeCardStatus = (cardId, isLiked) => {
     //Добавить свой лайк в массив лайков
     //Постановка лайка
     return fetch(`${this._url}cards/likes/${cardId}`, {
-      method: "PUT",
+      method: isLiked ? "PUT" : "DELETE",
       headers: this._headers,
     }).then((res) => this._handleCheckResponse(res));
   };
 
-  deleteLike = (cardId) => {
-    //Удалить свой лайк из массива лайков
-    return fetch(`${this._url}cards/likes/${cardId}`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then((res) => this._handleCheckResponse(res));
-  };
-
-  updateAvatar = (avatar) => {
+  setUserAvatar = (avatar) => {
     //Отправить новый аватар
     return fetch(`${this._url}users/me/avatar`, {
       method: "PATCH",

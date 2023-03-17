@@ -7,6 +7,7 @@ function ImagePopup({ card, onClose }) {
           : "popup popup_content_open-image"
       }
       aria-label={"popup_content_open-image"}
+      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="popup__img-container">
         <button
@@ -15,8 +16,8 @@ function ImagePopup({ card, onClose }) {
           onClick={onClose}
         ></button>
         <figure className="popup__figure-wrapper">
-          <img className="popup__img" src={card.link} alt={card.title} />
-          <figcaption className="popup__img-caption">{card.title}</figcaption>
+          <img className="popup__img" src={card.link} alt={card.name} />
+          <figcaption className="popup__img-caption">{card.name}</figcaption>
         </figure>
       </div>
     </section>

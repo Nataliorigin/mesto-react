@@ -1,8 +1,19 @@
-function PopupWithForm({ title, name, textButton, isOpen, onClose, children }) {
+function PopupWithForm({
+  title,
+  name,
+  textButton,
+  isOpen,
+  onClose,
+  children,
+  onSubmit,
+  onLoading,
+  textLoading,
+}) {
   return (
     <section
       className={isOpen ? "popup popup_opened" : `popup popup_content_${name}`}
       aria-label={`popup popup_content_${name}`}
+      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className={"popup__container"}>
         <button
@@ -12,10 +23,17 @@ function PopupWithForm({ title, name, textButton, isOpen, onClose, children }) {
           aria-label="Закрыть"
         ></button>
         <h2 className={"popup__title"}>{title}</h2>
-        <form action="#" className={"popup_form form"} name={name}>
+        <form
+          action="#"
+          className={"popup_form form"}
+          name={name}
+          onSubmit={onSubmit}
+        >
           {children}
           <button className={"form__button-save"} type={"submit"}>
-            {textButton || "Сохранить"}
+            {onLoading
+              ? textLoading || "Сохранение..."
+              : textButton || "Сохранить"}
           </button>
         </form>
       </div>

@@ -1,6 +1,18 @@
 import PopupWithForm from "./PopupWithForm";
+import { useRef } from "react";
 
-function AddPlacePopup({ isOpen, onClose }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
+  const refInputName = useRef();
+  const refInputLink = useRef();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onAddPlace({
+      name: refInputName.current.value,
+      link: refInputLink.current.value,
+    });
+  };
   return (
     <PopupWithForm
       name={"add-card"}
@@ -8,9 +20,13 @@ function AddPlacePopup({ isOpen, onClose }) {
       isOpen={isOpen}
       onClose={onClose}
       textButton={"Создать"}
+      textLoading={"Создание..."}
+      onSubmit={handleSubmit}
+      onLoading={isLoading}
     >
       <label className="form__field">
         <input
+          ref={refInputName}
           className="form__input form__input_name_title"
           tabIndex="1"
           placeholder="Название"
@@ -24,6 +40,7 @@ function AddPlacePopup({ isOpen, onClose }) {
       </label>
       <label className="form__field">
         <input
+          ref={refInputLink}
           className="form__input form__input_name_link"
           tabIndex="2"
           placeholder="Ссылка на картинку"
