@@ -1,6 +1,9 @@
 import PopupWithForm from "./PopupWithForm";
+import useValidation from "../hooks/useValidation";
 
 function DeleteCardPopup({ isOpen, onClose, onDeleteCard, isLoading, card }) {
+  const { isFormValid } = useValidation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onDeleteCard(card);
@@ -15,6 +18,7 @@ function DeleteCardPopup({ isOpen, onClose, onDeleteCard, isLoading, card }) {
       textLoading={"Удаление..."}
       onLoading={isLoading}
       onSubmit={handleSubmit}
+      isValid={isFormValid}
     ></PopupWithForm>
   );
 }

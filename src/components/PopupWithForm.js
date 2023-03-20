@@ -8,6 +8,7 @@ function PopupWithForm({
   onSubmit,
   onLoading,
   textLoading,
+  isValid,
 }) {
   return (
     <section
@@ -30,7 +31,12 @@ function PopupWithForm({
           onSubmit={onSubmit}
         >
           {children}
-          <button className={"form__button-save"} type={"submit"}>
+          <button
+            className={`form__button-save ${
+              !isValid && "form__button-save_disabled"
+            }`}
+            type={"submit"}
+          >
             {onLoading
               ? textLoading || "Сохранение..."
               : textButton || "Сохранить"}

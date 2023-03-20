@@ -1,22 +1,24 @@
 import PopupWithForm from "./PopupWithForm";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
+import useValidation from "../hooks/useValidation";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
-  const refInputName = useRef();
-  const refInputLink = useRef();
-
+  const {
+    values,
+    errors,
+    onChange,
+    resetValidation,
+    isFormValid,
+    setIsFormValid,
+  } = useValidation();
   useEffect(() => {
-    refInputName.current.value = "";
-    refInputLink.current.value = "";
+    resetValidation();
+    setIsFormValid(false);
   }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    onAddPlace({
-      name: refInputName.current.value,
-      link: refInputLink.current.value,
-    });
+    onAddPlace(values);
   };
   return (
     <PopupWithForm
@@ -28,11 +30,15 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       textLoading={"Создание..."}
       onSubmit={handleSubmit}
       onLoading={isLoading}
+      isValid={isFormValid}
     >
       <label className="form__field">
         <input
-          ref={refInputName}
-          className="form__input form__input_name_title"
+          value={values.name || ""}
+          onChange={onChange}
+          className={`form__input form__input_name_title ${
+            errors.name ? "form__input_type_error" : ""
+          } `}
           tabIndex="1"
           placeholder="Название"
           type="text"
@@ -41,19 +47,34 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           maxLength="30"
           required
         />
-        <span className="name-error form__input-error"></span>
+        <span
+          className={`name-error form__input-error ${
+            errors.name ? "form__input-error_active" : ""
+          }`}
+        >
+          {errors.name}
+        </span>
       </label>
       <label className="form__field">
         <input
-          ref={refInputLink}
-          className="form__input form__input_name_link"
+          value={values.link || ""}
+          onChange={onChange}
+          className={`form__input form__input_name_link ${
+            errors.link ? "form__input_type_error" : ""
+          }`}
           tabIndex="2"
           placeholder="Ссылка на картинку"
           type="url"
           name="link"
           required
         />
-        <span className="link-error form__input-error"></span>
+        <span
+          className={`link-error form__input-error ${
+            errors.link ? "form__input-error_active" : ""
+          }`}
+        >
+          {errors.link}
+        </span>
       </label>
     </PopupWithForm>
   );
